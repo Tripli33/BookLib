@@ -1,63 +1,48 @@
---BookLibDb
-CREATE DATABASE BookLibDb;
--- Authors
-CREATE TABLE IF NOT EXISTS "Authors" (
-    "AuthorId" serial primary key,
-    "AuthorName" varchar(30) not null,
-    "Description" text
+-- Active: 1692714594092@@localhost@5432@book_lib_db
+--book_lib_db;
+CREATE DATABASE book_lib_db;
+
+CREATE TABLE IF NOT EXISTS "authors" (
+    "author_id" serial primary key,
+    "author_name" varchar(30) not null,
+    "description" text
 );
 
--- Publishers
-CREATE TABLE IF NOT EXISTS "Publishers" (
-    "PublisherId" serial primary key,
-    "PublisherName" varchar(30) not null
+CREATE TABLE IF NOT EXISTS "publishers" (
+    "publisher_id" serial primary key,
+    "publisher_name" varchar(30) not null
 );
 
--- Languages
-CREATE TABLE IF NOT EXISTS "Languages" (
-    "LanguageId" serial primary key,
-    "Name" varchar(255) not null
+CREATE TYPE genre_enum AS ENUM (
+    'WithoutGenre',
+    'Action',
+    'Adventure',
+    'Comedy',
+    'Drama',
+    'Fantasy',
+    'Horror',
+    'Mystery',
+    'Romance',
+    'ScienceFiction',
+    'Thriller',
+    'Western'
 );
 
--- Language
-INSERT INTO "Languages" ("Name") VALUES
-    ('Without language'),
-    ('Russian'),
-    ('English');
-
--- Genres
-CREATE TABLE IF NOT EXISTS "Genres" (
-    "GenreId" serial primary key,
-    "Name" varchar(255) not null
+CREATE TYPE language_enum AS ENUM (
+    'WithoutLanguage',
+    'Russian',
+    'English'
 );
 
--- Genre
-INSERT INTO "Genres" ("Name") VALUES
-    ('Without genre'),
-    ('Action'),
-    ('Adventure'),
-    ('Comedy'),
-    ('Drama'),
-    ('Fantasy'),
-    ('Horror'),
-    ('Mystery'),
-    ('Romance'),
-    ('Science fiction'),
-    ('Thriller'),
-    ('Western');
-
--- Books
-CREATE TABLE IF NOT EXISTS "Books" (
-    "BookId" serial primary key,
-    "Name" varchar(30) not null,
-    "Genre" integer not null,
-    "Language" integer not null,
-    "AuthorId" bigint not null,
-    "PublisherId" bigint not null,
-    "PublishDate" date not null,
-    "Pages" integer not null,
-    FOREIGN KEY ("AuthorId") REFERENCES "Authors" ("AuthorId"),
-    FOREIGN KEY ("PublisherId") REFERENCES "Publishers" ("PublisherId"),
-    FOREIGN KEY ("Genre") REFERENCES "Genres" ("GenreId"),
-    FOREIGN KEY ("Language") REFERENCES "Languages" ("LanguageId")
+CREATE TABLE IF NOT EXISTS "books" (
+    "book_id" serial primary key,
+    "name" varchar(50) not null,
+    "genre" genre_enum not null,
+    "language" language_enum not null,
+    "author_id" bigint not null,
+    "publisher_id" bigint not null,
+    "publish_date" date not null,
+    "pages" integer not null,
+    FOREIGN KEY ("author_id") REFERENCES "authors" ("author_id"),
+    FOREIGN KEY ("publisher_id") REFERENCES "publishers" ("publisher_id")
 );

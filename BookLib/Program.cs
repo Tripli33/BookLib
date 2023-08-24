@@ -1,8 +1,11 @@
+using Dapper;
 using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<RepositoryContext>(); 
+DefaultTypeMap.MatchNamesWithUnderscores = true;
+builder.Services.AddSingleton<RepositoryContext>();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();

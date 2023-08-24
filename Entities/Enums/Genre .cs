@@ -4,7 +4,6 @@ namespace Entities.Enums;
 
 public enum Genre
 {
-    [Display(Name = "Without genre")]
     WithoutGenre,
     Action,
     Adventure,
@@ -14,7 +13,6 @@ public enum Genre
     Horror,
     Mystery,
     Romance,
-    [Display(Name = "Science fiction")]
     ScienceFiction,
     Thriller,
     Western

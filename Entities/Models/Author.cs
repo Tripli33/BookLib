@@ -5,8 +5,7 @@ namespace Entities.Models;
 
 public class Author
 {
-    [Column("AuthorId")]
-    public long Id { get; set; }
+    public long AuthorId { get; set; }
     [Required(ErrorMessage = "Author name is a required field.")]
     [MaxLength(30, ErrorMessage ="Maximum length for the author name is 30 characters.")]
     public string AuthorName { get; set; } = string.Empty;
