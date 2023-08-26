@@ -16,8 +16,8 @@ public abstract class BookForManipulationDto
     [JsonConverter(typeof(JsonStringEnumConverter))]
     [Required(ErrorMessage = "Book language is a required field.")]
     public Language Language { get; init; } = Language.WithoutLanguage;
-    public long AuthorId { get; init; }
-    public long PublisherId { get; init; }
+    public long? AuthorId { get; init; }
+    public long? PublisherId { get; init; }
     [Required(ErrorMessage = "Book publish date is a required field.")]
     public  DateTime PublishDate { get; init; }
     [Required(ErrorMessage = "Book pages is a required field.")]

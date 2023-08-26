@@ -39,10 +39,10 @@ CREATE TABLE IF NOT EXISTS "books" (
     "name" varchar(50) not null,
     "genre" genre_enum not null,
     "language" language_enum not null,
-    "author_id" bigint not null,
-    "publisher_id" bigint not null,
+    "author_id" bigint,
+    "publisher_id" bigint,
     "publish_date" date not null,
     "pages" integer not null,
-    FOREIGN KEY ("author_id") REFERENCES "authors" ("author_id"),
-    FOREIGN KEY ("publisher_id") REFERENCES "publishers" ("publisher_id")
+    FOREIGN KEY ("author_id") REFERENCES "authors" ("author_id") ON DELETE SET NULL,
+    FOREIGN KEY ("publisher_id") REFERENCES "publishers" ("publisher_id") ON DELETE SET NULL
 );

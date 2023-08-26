@@ -15,8 +15,8 @@ public class Book
     [JsonConverter(typeof(JsonStringEnumConverter))]
     [Required(ErrorMessage = "Book language is a required field.")]
     public Language Language { get; set; } = Language.WithoutLanguage;
-    public long AuthorId { get; set; }
-    public long PublisherId { get; set; }
+    public long? AuthorId { get; set; }
+    public long? PublisherId { get; set; }
     [Required(ErrorMessage = "Book publish date is a required field.")]
     public  DateTime PublishDate { get; set; }
     [Required(ErrorMessage = "Book pages is a required field.")]
