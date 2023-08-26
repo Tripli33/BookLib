@@ -60,7 +60,7 @@ public class AuthorRepository : IAuthorRepository
     public async Task UpdateAuthor(long id, AuthorForUpdateDto author)
     {
         var query = @"UPDATE authors SET
-                    author_name = @AuthorName, genre = @Description
+                    author_name = @AuthorName, description = @Description
                     WHERE author_id = @AuthorId";
         using var connection = _context.CreateConnection();
         var temp = author.ConvertAuthorForManipulationDtoToAuthor(id);
