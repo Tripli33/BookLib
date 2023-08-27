@@ -1,3 +1,5 @@
+using BookLib.Extensions;
+using Contracts;
 using Dapper;
 using Repository;
 
@@ -10,11 +12,9 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
+app.ConfigureExceptionHandler();
+
+if (app.Environment.IsProduction())
 {
     app.UseHsts();
 }
