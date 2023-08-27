@@ -57,6 +57,16 @@ public class PublisherRepository : IPublisherRepository
         return publisher;
     }
 
+    public async Task<bool> PublisherExists(long id)
+    {
+        return await GetPublisher(id) is not null;
+    }
+
+    public async Task<bool> PublisherExists(string publisherName)
+    {
+        return await GetPublisher(publisherName) is not null;
+    }
+
     public async Task UpdatePublisher(long id, PublisherForUpdateDto publisher)
     {
         var query = @"UPDATE publishers SET

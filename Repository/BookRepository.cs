@@ -26,6 +26,11 @@ public class BookRepository : IBookRepository
         await connection.ExecuteAsync(query, book);
     }
 
+    public async Task<bool> BookExists(long id)
+    {
+        return await GetBook(id) is not null;
+    }
+
     public async Task DeleteBook(long id)
     {
         var query = @"DELETE FROM books
@@ -48,15 +53,6 @@ public class BookRepository : IBookRepository
                     WHERE author_id = @authorId";
         using var connection = _context.CreateConnection();
         var books = await connection.QueryAsync<Book>(query, new { authorId });
-        return books.ToList();
-    }
-
-    public async Task<IEnumerable<Book>> GetAllBooksByAuthor(string authorName)
-    {
-        var query = @"SELECT * FROM books
-                    WHERE author_name = @authorName";
-        using var connection = _context.CreateConnection();
-        var books = await connection.QueryAsync<Book>(query, new { authorName });
         return books.ToList();
     }
 
@@ -102,15 +98,6 @@ public class BookRepository : IBookRepository
                     WHERE publisher_id = @publisherId";
         using var connection = _context.CreateConnection();
         var books = await connection.QueryAsync<Book>(query, new { publisherId });
-        return books.ToList();
-    }
-
-    public async Task<IEnumerable<Book>> GetAllBooksByPublisher(string publisherName)
-    {
-        var query = @"SELECT * FROM books
-                    WHERE publisher_name = @publisherName";
-        using var connection = _context.CreateConnection();
-        var books = await connection.QueryAsync<Book>(query, new { publisherName });
         return books.ToList();
     }
 

@@ -2,9 +2,9 @@ using Entities.Enums;
 using Entities.Models;
 using Shared.DataTransferObjects;
 
-namespace Contracts;
+namespace Service.Contracts;
 
-public interface IBookRepository
+public interface IBookService
 {
     Task<IEnumerable<Book>> GetAllBooks();
     Task<IEnumerable<Book>> GetAllBooksByName(string name);
@@ -17,5 +17,4 @@ public interface IBookRepository
     Task AddBook(BookForAddDto book);
     Task DeleteBook(long id);
     Task UpdateBook(long id, BookForUpdateDto book);
-    Task<bool> BookExists(long id);
 }

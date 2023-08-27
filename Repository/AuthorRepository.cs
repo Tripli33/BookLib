@@ -23,6 +23,16 @@ public class AuthorRepository : IAuthorRepository
         await connection.ExecuteAsync(query, author);
     }
 
+    public async Task<bool> AuthorExists(long id)
+    {
+        return await GetAuthor(id) is not null;
+    }
+
+    public async Task<bool> AuthorExists(string authorName)
+    {
+        return await GetAuthor(authorName) is not null;
+    }
+
     public async Task DeleteAuthor(long id)
     {
         var query = @"DELETE FROM authors

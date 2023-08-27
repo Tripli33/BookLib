@@ -11,4 +11,6 @@ public interface IAuthorRepository
     Task AddAuthor(AuthorForAddDto author);
     Task DeleteAuthor(long id);
     Task UpdateAuthor(long id, AuthorForUpdateDto author);
+    Task<bool> AuthorExists(long id);
+    Task<bool> AuthorExists(string authorName);
 }
