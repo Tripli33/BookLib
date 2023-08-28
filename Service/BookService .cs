@@ -37,10 +37,10 @@ public class BookService : IBookService
         throw new AuthorNotFoundException(authorId);
         return await _repositoryManager.Book.GetAllBooksByAuthor(authorId);
     }
-    
-    public Task<IEnumerable<Book>> GetAllBooksByGenre(Genre genre)
+
+    public async Task<IEnumerable<Book>> GetAllBooksByGenre(Genre genre)
     {
-        return _repositoryManager.Book.GetAllBooksByGenre(genre);
+        return await _repositoryManager.Book.GetAllBooksByGenre(genre);
     }
 
     public Task<IEnumerable<Book>> GetAllBooksByLanguage(Language language)
@@ -53,9 +53,9 @@ public class BookService : IBookService
         return await _repositoryManager.Book.GetAllBooksByName(name);
     }
 
-    public Task<IEnumerable<Book>> GetAllBooksByPublishDate(DateTime publishDate)
+    public async Task<IEnumerable<Book>> GetAllBooksByPublishDate(DateTime publishDate)
     {
-        return _repositoryManager.Book.GetAllBooksByPublishDate(publishDate);
+        return await _repositoryManager.Book.GetAllBooksByPublishDate(publishDate);
     }
 
     public async Task<IEnumerable<Book>> GetAllBooksByPublisher(long publisherId)
@@ -65,9 +65,9 @@ public class BookService : IBookService
         return await _repositoryManager.Book.GetAllBooksByPublisher(publisherId);
     }
 
-    public Task<Book> GetBook(long id)
+    public async Task<Book> GetBook(long id)
     {
-        var book = _repositoryManager.Book.GetBook(id);
+        var book = await _repositoryManager.Book.GetBook(id);
         return book ?? throw new BookNotFoundException(id);
     }
 

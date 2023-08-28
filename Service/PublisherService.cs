@@ -31,15 +31,15 @@ public class PublisherService : IPublisherService
         return await _repositoryManager.Publisher.GetAllPublishers();
     }
 
-    public Task<Publisher> GetPublisher(long id)
+    public async Task<Publisher> GetPublisher(long id)
     {
-        var publisher = _repositoryManager.Publisher.GetPublisher(id);
+        var publisher = await _repositoryManager.Publisher.GetPublisher(id);
         return publisher ?? throw new PublisherNotFoundException(id);
     }
 
-    public Task<Publisher> GetPublisher(string publisherName)
+    public async Task<Publisher> GetPublisher(string publisherName)
     {
-        var publisher = _repositoryManager.Publisher.GetPublisher(publisherName);
+        var publisher = await _repositoryManager.Publisher.GetPublisher(publisherName);
         return publisher ?? throw new PublisherNotFoundException(publisherName);
     }
 
