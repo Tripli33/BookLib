@@ -2,13 +2,18 @@ using BookLib.Extensions;
 using Contracts;
 using Dapper;
 using Repository;
+using Service;
+using Service.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
 DefaultTypeMap.MatchNamesWithUnderscores = true;
 builder.Services.AddSingleton<RepositoryContext>();
 
-builder.Services.AddControllers();
+builder.Services.ConfigureRepositoryManger();
+builder.Services.ConfigureServiceManger();
+
+builder.Services.ConfigureControllers();
 
 var app = builder.Build();
 
