@@ -1,6 +1,4 @@
 using Entities.Enums;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Entities.Models;
 public class Book
@@ -13,4 +11,5 @@ public class Book
     public long? PublisherId { get; set; }
     public  DateTime PublishDate { get; set; }
     public int Pages { get; set; }
+    ICollection<CustomerBook> CustomerBooks { get; set; } = new List<CustomerBook>();
 }
