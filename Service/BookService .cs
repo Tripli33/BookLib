@@ -26,46 +26,46 @@ public class BookService : IBookService
         await _repositoryManager.Book.DeleteBook(id);
     }
 
-    public Task<IEnumerable<Book>> GetAllBooks()
+    public Task<IEnumerable<BookDto>> GetAllBooks()
     {
         return _repositoryManager.Book.GetAllBooks();
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooksByAuthor(long authorId)
+    public async Task<IEnumerable<BookDto>> GetAllBooksByAuthor(long authorId)
     {
         if (!await _repositoryManager.Author.AuthorExists(authorId))
         throw new AuthorNotFoundException(authorId);
         return await _repositoryManager.Book.GetAllBooksByAuthor(authorId);
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooksByGenre(Genre genre)
+    public async Task<IEnumerable<BookDto>> GetAllBooksByGenre(Genre genre)
     {
         return await _repositoryManager.Book.GetAllBooksByGenre(genre);
     }
 
-    public Task<IEnumerable<Book>> GetAllBooksByLanguage(Language language)
+    public Task<IEnumerable<BookDto>> GetAllBooksByLanguage(Language language)
     {
         return _repositoryManager.Book.GetAllBooksByLanguage(language);
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooksByName(string name)
+    public async Task<IEnumerable<BookDto>> GetAllBooksByName(string name)
     {
         return await _repositoryManager.Book.GetAllBooksByName(name);
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooksByPublishDate(DateTime publishDate)
+    public async Task<IEnumerable<BookDto>> GetAllBooksByPublishDate(DateTime publishDate)
     {
         return await _repositoryManager.Book.GetAllBooksByPublishDate(publishDate);
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooksByPublisher(long publisherId)
+    public async Task<IEnumerable<BookDto>> GetAllBooksByPublisher(long publisherId)
     {
         if (!await _repositoryManager.Publisher.PublisherExists(publisherId))
         throw new PublisherNotFoundException(publisherId);
         return await _repositoryManager.Book.GetAllBooksByPublisher(publisherId);
     }
 
-    public async Task<Book> GetBook(long id)
+    public async Task<BookDto> GetBook(long id)
     {
         var book = await _repositoryManager.Book.GetBook(id);
         return book ?? throw new BookNotFoundException(id);

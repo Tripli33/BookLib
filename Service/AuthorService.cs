@@ -26,18 +26,18 @@ public class AuthorService : IAuthorService
         await _repositoryManager.Author.DeleteAuthor(id);
     }
 
-    public async Task<IEnumerable<Author>> GetAllAuthors()
+    public async Task<IEnumerable<AuthorDto>> GetAllAuthors()
     {
         return await _repositoryManager.Author.GetAllAuthors();
     }
 
-    public async Task<Author> GetAuthor(long id)
+    public async Task<AuthorDto> GetAuthor(long id)
     {
         var author = await _repositoryManager.Author.GetAuthor(id);
         return author ?? throw new AuthorNotFoundException(id);
     }
 
-    public async Task<Author> GetAuthor(string authorName)
+    public async Task<AuthorDto> GetAuthor(string authorName)
     {
         var author = await _repositoryManager.Author.GetAuthor(authorName);
         return author ?? throw new AuthorNotFoundException(authorName);

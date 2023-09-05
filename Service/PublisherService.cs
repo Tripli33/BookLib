@@ -26,18 +26,18 @@ public class PublisherService : IPublisherService
         await _repositoryManager.Publisher.DeletePublisher(id);
     }
 
-    public async Task<IEnumerable<Publisher>> GetAllPublishers()
+    public async Task<IEnumerable<PublisherDto>> GetAllPublishers()
     {
         return await _repositoryManager.Publisher.GetAllPublishers();
     }
 
-    public async Task<Publisher> GetPublisher(long id)
+    public async Task<PublisherDto> GetPublisher(long id)
     {
         var publisher = await _repositoryManager.Publisher.GetPublisher(id);
         return publisher ?? throw new PublisherNotFoundException(id);
     }
 
-    public async Task<Publisher> GetPublisher(string publisherName)
+    public async Task<PublisherDto> GetPublisher(string publisherName)
     {
         var publisher = await _repositoryManager.Publisher.GetPublisher(publisherName);
         return publisher ?? throw new PublisherNotFoundException(publisherName);

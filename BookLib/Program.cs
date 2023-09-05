@@ -1,9 +1,6 @@
 using BookLib.Extensions;
-using Contracts;
 using Dapper;
 using Repository;
-using Service;
-using Service.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 

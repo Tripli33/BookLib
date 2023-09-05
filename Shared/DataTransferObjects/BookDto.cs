@@ -1,7 +1,6 @@
-namespace Shared.DataTransferObjects
+namespace Shared.DataTransferObjects;
+
+public class BookDto : BookForManipulationDto
 {
-    public class BookDto : BookForManipulationDto
-    {
-        public long BookId { get; set; }
-    }
+    public long BookId { get; set; }
 }
