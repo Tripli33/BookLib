@@ -41,29 +41,29 @@ public class AuthorRepository : IAuthorRepository
         await connection.ExecuteAsync(query, new { id });
     }
 
-    public async Task<IEnumerable<Author>> GetAllAuthors()
+    public async Task<IEnumerable<AuthorDto>> GetAllAuthors()
     {
         var query = "SELECT * FROM authors";
         using var connection = _context.CreateConnection();
-        var authors = await connection.QueryAsync<Author>(query);
+        var authors = await connection.QueryAsync<AuthorDto>(query);
         return authors.ToList();
     }
 
-    public async Task<Author> GetAuthor(long id)
+    public async Task<AuthorDto> GetAuthor(long id)
     {
         var query = @"SELECT * FROM authors
                     WHERE author_id = @id";
         using var connection = _context.CreateConnection();
-        var author = await connection.QueryFirstOrDefaultAsync<Author>(query, new { id });
+        var author = await connection.QueryFirstOrDefaultAsync<AuthorDto>(query, new { id });
         return author;
     }
 
-    public async Task<Author> GetAuthor(string authorName)
+    public async Task<AuthorDto> GetAuthor(string authorName)
     {
         var query = @"SELECT * FROM authors
                     WHERE author_name = @authorName";
         using var connection = _context.CreateConnection();
-        var author = await connection.QueryFirstOrDefaultAsync<Author>(query, new { authorName });
+        var author = await connection.QueryFirstOrDefaultAsync<AuthorDto>(query, new { authorName });
         return author;
     }
 

@@ -39,74 +39,74 @@ public class BookRepository : IBookRepository
         await connection.ExecuteAsync(query, new { id });
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooks()
+    public async Task<IEnumerable<BookDto>> GetAllBooks()
     {
         var query = "SELECT * FROM books";
         using var connection = _context.CreateConnection();
-        var books = await connection.QueryAsync<Book>(query);
+        var books = await connection.QueryAsync<BookDto>(query);
         return books.ToList();
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooksByAuthor(long authorId)
+    public async Task<IEnumerable<BookDto>> GetAllBooksByAuthor(long authorId)
     {
         var query = @"SELECT * FROM books
                     WHERE author_id = @authorId";
         using var connection = _context.CreateConnection();
-        var books = await connection.QueryAsync<Book>(query, new { authorId });
+        var books = await connection.QueryAsync<BookDto>(query, new { authorId });
         return books.ToList();
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooksByGenre(Genre genre)
+    public async Task<IEnumerable<BookDto>> GetAllBooksByGenre(Genre genre)
     {
         var query = @$"SELECT * FROM books
                     WHERE genre = '{genre}'";
         using var connection = _context.CreateConnection();
-        var books = await connection.QueryAsync<Book>(query);
+        var books = await connection.QueryAsync<BookDto>(query);
         return books.ToList();
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooksByLanguage(Language language)
+    public async Task<IEnumerable<BookDto>> GetAllBooksByLanguage(Language language)
     {
         var query = @$"SELECT * FROM books
                     WHERE language = '{language}'";
         using var connection = _context.CreateConnection();
-        var books = await connection.QueryAsync<Book>(query);
+        var books = await connection.QueryAsync<BookDto>(query);
         return books.ToList();
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooksByName(string name)
+    public async Task<IEnumerable<BookDto>> GetAllBooksByName(string name)
     {
         var query = @"SELECT * FROM books
                     WHERE name = @name";
         using var connection = _context.CreateConnection();
-        var books = await connection.QueryAsync<Book>(query, new { name });
+        var books = await connection.QueryAsync<BookDto>(query, new { name });
         return books.ToList();
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooksByPublishDate(DateTime publishDate)
+    public async Task<IEnumerable<BookDto>> GetAllBooksByPublishDate(DateTime publishDate)
     {
         var query = @"SELECT * FROM books
                     WHERE publish_date = @publishDate";
         using var connection = _context.CreateConnection();
-        var books = await connection.QueryAsync<Book>(query, new { publishDate });
+        var books = await connection.QueryAsync<BookDto>(query, new { publishDate });
         return books.ToList();
     }
 
-    public async Task<IEnumerable<Book>> GetAllBooksByPublisher(long publisherId)
+    public async Task<IEnumerable<BookDto>> GetAllBooksByPublisher(long publisherId)
     {
         var query = @"SELECT * FROM books
                     WHERE publisher_id = @publisherId";
         using var connection = _context.CreateConnection();
-        var books = await connection.QueryAsync<Book>(query, new { publisherId });
+        var books = await connection.QueryAsync<BookDto>(query, new { publisherId });
         return books.ToList();
     }
 
-    public async Task<Book> GetBook(long id)
+    public async Task<BookDto> GetBook(long id)
     {
         var query = @"SELECT * FROM books
                     WHERE book_id = @id";
         using var connection = _context.CreateConnection();
-        var book = await connection.QueryFirstOrDefaultAsync<Book>(query, new { id });
+        var book = await connection.QueryFirstOrDefaultAsync<BookDto>(query, new { id });
         return book;
     }
 

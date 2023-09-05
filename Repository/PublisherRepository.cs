@@ -31,29 +31,29 @@ public class PublisherRepository : IPublisherRepository
         await connection.ExecuteAsync(query, new { id });
     }
 
-    public async Task<IEnumerable<Publisher>> GetAllPublishers()
+    public async Task<IEnumerable<PublisherDto>> GetAllPublishers()
     {
         var query = "SELECT * FROM publishers";
         using var connection = _context.CreateConnection();
-        var publishers = await connection.QueryAsync<Publisher>(query);
+        var publishers = await connection.QueryAsync<PublisherDto>(query);
         return publishers.ToList();
     }
 
-    public async Task<Publisher> GetPublisher(long id)
+    public async Task<PublisherDto> GetPublisher(long id)
     {
         var query = @"SELECT * FROM publishers
                     WHERE publisher_id = @id";
         using var connection = _context.CreateConnection();
-        var publisher = await connection.QueryFirstOrDefaultAsync<Publisher>(query, new { id });
+        var publisher = await connection.QueryFirstOrDefaultAsync<PublisherDto>(query, new { id });
         return publisher;
     }
 
-    public async Task<Publisher> GetPublisher(string publisherName)
+    public async Task<PublisherDto> GetPublisher(string publisherName)
     {
         var query = @"SELECT * FROM publishers
                     WHERE publisher_name = @PublisherName";
         using var connection = _context.CreateConnection();
-        var publisher = await connection.QueryFirstOrDefaultAsync<Publisher>(query, new { publisherName });
+        var publisher = await connection.QueryFirstOrDefaultAsync<PublisherDto>(query, new { publisherName });
         return publisher;
     }
 
