@@ -8,6 +8,7 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IBookService> _bookService;
     private readonly Lazy<IPublisherService> _publisherService;
     private readonly Lazy<IAuthorService> _authorService;
+    private readonly Lazy<ICustomerService> _customerService;
     public ServiceManager (IRepositoryManager repositoryManager)
     {
         _bookService = new Lazy<IBookService>(() => 
@@ -16,10 +17,14 @@ public class ServiceManager : IServiceManager
         new PublisherService(repositoryManager));
         _authorService = new Lazy<IAuthorService>(() => 
         new AuthorService(repositoryManager));
+        _customerService = new Lazy<ICustomerService>(() =>
+        new CustomerService(repositoryManager));
     }
     public IBookService BookService => _bookService.Value;
 
     public IPublisherService PublisherService => _publisherService.Value;
 
     public IAuthorService AuthorService => _authorService.Value;
+
+    public ICustomerService CustomerService => _customerService.Value;
 }
