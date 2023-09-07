@@ -6,4 +6,5 @@ public interface IRepositoryManager
     public IAuthorRepository Author { get; }
     public IPublisherRepository Publisher { get; }
     public ICustomerRepository Customer { get; }
+    public ICustomerBookRepository CustomerBook { get; }
 }

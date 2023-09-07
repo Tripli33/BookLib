@@ -10,6 +10,7 @@ public sealed class RepositoryManager : IRepositoryManager
     private readonly Lazy<IAuthorRepository> _authorRepository;
     private readonly Lazy<IPublisherRepository> _publisherRepository;
     private readonly Lazy<ICustomerRepository> _customerRepository;
+    private readonly Lazy<ICustomerBookRepository> _customerBookRepository;
 
     public RepositoryManager(RepositoryContext context)
     {
@@ -22,6 +23,8 @@ public sealed class RepositoryManager : IRepositoryManager
         new PublisherRepository(context));
         _customerRepository = new Lazy<ICustomerRepository>(() =>
         new CustomerRepository(context));
+        _customerBookRepository = new Lazy<ICustomerBookRepository>(() =>
+        new CustomerBookRepository(context));
     }
 
     public IBookRepository Book => _bookRepository.Value;
@@ -31,4 +34,6 @@ public sealed class RepositoryManager : IRepositoryManager
     public IPublisherRepository Publisher => _publisherRepository.Value;
 
     public ICustomerRepository Customer => _customerRepository.Value;
+
+    public ICustomerBookRepository CustomerBook => _customerBookRepository.Value;
 }
