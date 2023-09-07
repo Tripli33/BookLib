@@ -6,4 +6,5 @@ public interface IServiceManager
     public IPublisherService PublisherService { get; }
     public IAuthorService AuthorService { get; }
     public ICustomerService CustomerService { get; }
+    public ICustomerBookService CustomerBookService { get; }
 }
