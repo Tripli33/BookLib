@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Shared.DataTransferObjects.Author;
+using Shared.DataTransferObjects.Publisher;
 
 namespace Shared.DataTransferObjects.Book;
 

@@ -1,8 +1,9 @@
 using Contracts;
 using Dapper;
 using Entities.Enums;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Author;
 using Shared.DataTransferObjects.Book;
+using Shared.DataTransferObjects.Publisher;
 
 namespace Repository;
 

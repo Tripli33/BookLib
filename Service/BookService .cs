@@ -2,8 +2,9 @@ using Contracts;
 using Entities.Enums;
 using Entities.Exceptions;
 using Service.Contracts;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Author;
 using Shared.DataTransferObjects.Book;
+using Shared.DataTransferObjects.Publisher;
 
 namespace Service;
 

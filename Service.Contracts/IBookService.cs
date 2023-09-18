@@ -1,4 +1,3 @@
-using Entities.Enums;
 using Shared.DataTransferObjects.Book;
 
 namespace Service.Contracts;

@@ -1,8 +1,5 @@
-using Entities.Enums;
-using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
-using Shared.DataTransferObjects;
 using Shared.DataTransferObjects.Book;
 
 namespace BookLib.Presentation.Controllers;

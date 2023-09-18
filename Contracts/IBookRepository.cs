@@ -1,6 +1,7 @@
 using Entities.Enums;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Author;
 using Shared.DataTransferObjects.Book;
+using Shared.DataTransferObjects.Publisher;
 
 namespace Contracts;
 

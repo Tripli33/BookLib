@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Entities.Enums;
 
 namespace Shared.DataTransferObjects.Book;
 
