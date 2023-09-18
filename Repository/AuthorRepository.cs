@@ -1,7 +1,6 @@
 using Contracts;
 using Dapper;
-using Entities.Models;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Author;
 
 namespace Repository;
 
@@ -13,14 +12,14 @@ public class AuthorRepository : IAuthorRepository
     {
         _context = context;
     }
-    public async Task AddAuthor(AuthorForAddDto author)
+    public void AddAuthor(AuthorForAddDto author)
     {
         var query = @$"INSERT INTO authors
             (author_name, description) 
             VALUES 
             (@AuthorName, @Description)";
         using var connection = _context.CreateConnection();
-        await connection.ExecuteAsync(query, author);
+        connection.Execute(query, author);
     }
 
     public async Task<bool> AuthorExists(long id)
@@ -33,12 +32,12 @@ public class AuthorRepository : IAuthorRepository
         return await GetAuthor(authorName) is not null;
     }
 
-    public async Task DeleteAuthor(long id)
+    public void DeleteAuthor(long id)
     {
         var query = @"DELETE FROM authors
                     WHERE author_id = @id";
         using var connection = _context.CreateConnection();
-        await connection.ExecuteAsync(query, new { id });
+        connection.Execute(query, new { id });
     }
 
     public async Task<IEnumerable<AuthorDto>> GetAllAuthors()
@@ -67,13 +66,13 @@ public class AuthorRepository : IAuthorRepository
         return author;
     }
 
-    public async Task UpdateAuthor(long id, AuthorForUpdateDto author)
+    public void UpdateAuthor(long id, AuthorForUpdateDto author)
     {
         var query = @"UPDATE authors SET
                     author_name = @AuthorName, description = @Description
                     WHERE author_id = @AuthorId";
         using var connection = _context.CreateConnection();
-        var temp = author.ConvertAuthorForManipulationDtoToAuthor(id);
-        await connection.ExecuteAsync(query, temp);
+        var temp = author.ConvertAuthorForManipulationToAuthorDto(id);
+        connection.Execute(query, temp);
     }
 }
