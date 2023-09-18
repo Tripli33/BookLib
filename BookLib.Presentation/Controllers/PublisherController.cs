@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Publisher;
 
 namespace BookLib.Presentation.Controllers;
 
@@ -22,9 +22,9 @@ public class PublisherController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddPublisher([FromBody] PublisherForAddDto publisher)
+    public IActionResult AddPublisher([FromBody] PublisherForAddDto publisher)
     {
-        await _manager.PublisherService.AddPublisher(publisher);
+        _manager.PublisherService.AddPublisher(publisher);
         return Ok();
     }
 
