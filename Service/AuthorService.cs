@@ -1,8 +1,7 @@
 using Contracts;
 using Entities.Exceptions;
-using Entities.Models;
 using Service.Contracts;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Author;
 
 namespace Service;
 
@@ -14,16 +13,16 @@ public class AuthorService : IAuthorService
         _repositoryManager = repositoryManager;
     }
 
-    public async Task AddAuthor(AuthorForAddDto author)
+    public void AddAuthor(AuthorForAddDto author)
     {
-        await _repositoryManager.Author.AddAuthor(author);
+        _repositoryManager.Author.AddAuthor(author);
     }
 
     public async Task DeleteAuthor(long id)
     {
         if (!await _repositoryManager.Author.AuthorExists(id))
         throw new AuthorNotFoundException(id);
-        await _repositoryManager.Author.DeleteAuthor(id);
+        _repositoryManager.Author.DeleteAuthor(id);
     }
 
     public async Task<IEnumerable<AuthorDto>> GetAllAuthors()
@@ -47,6 +46,6 @@ public class AuthorService : IAuthorService
     {
         if (!await _repositoryManager.Author.AuthorExists(id))
         throw new AuthorNotFoundException(id);
-        await _repositoryManager.Author.UpdateAuthor(id, author);
+        _repositoryManager.Author.UpdateAuthor(id, author);
     }
 }
