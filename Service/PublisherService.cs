@@ -1,8 +1,7 @@
 using Contracts;
 using Entities.Exceptions;
-using Entities.Models;
 using Service.Contracts;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Publisher;
 
 namespace Service;
 
@@ -14,16 +13,16 @@ public class PublisherService : IPublisherService
         _repositoryManager = repositoryManager;
     }
 
-    public async Task AddPublisher(PublisherForAddDto publisher)
+    public void AddPublisher(PublisherForAddDto publisher)
     {
-        await _repositoryManager.Publisher.AddPublisher(publisher);
+        _repositoryManager.Publisher.AddPublisher(publisher);
     }
 
     public async Task DeletePublisher(long id)
     {
         if (!await _repositoryManager.Publisher.PublisherExists(id))
         throw new PublisherNotFoundException(id);
-        await _repositoryManager.Publisher.DeletePublisher(id);
+        _repositoryManager.Publisher.DeletePublisher(id);
     }
 
     public async Task<IEnumerable<PublisherDto>> GetAllPublishers()
@@ -47,6 +46,6 @@ public class PublisherService : IPublisherService
     {
         if (!await _repositoryManager.Publisher.PublisherExists(id))
         throw new PublisherNotFoundException(id);
-        await _repositoryManager.Publisher.UpdatePublisher(id, publisher);
+        _repositoryManager.Publisher.UpdatePublisher(id, publisher);
     }
 }
