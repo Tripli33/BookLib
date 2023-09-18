@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Author;
 
 namespace BookLib.Presentation.Controllers;
 
@@ -22,9 +22,9 @@ public class AuthorController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddAuthor([FromBody] AuthorForAddDto author)
+    public IActionResult AddAuthor([FromBody] AuthorForAddDto author)
     {
-        await _manager.AuthorService.AddAuthor(author);
+        _manager.AuthorService.AddAuthor(author);
         return Ok();
     }
 
