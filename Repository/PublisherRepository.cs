@@ -1,7 +1,6 @@
 using Contracts;
 using Dapper;
-using Entities.Models;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Publisher;
 
 namespace Repository;
 
@@ -13,22 +12,22 @@ public class PublisherRepository : IPublisherRepository
     {
         _context = context;
     }
-    public async Task AddPublisher(PublisherForAddDto publisher)
+    public void AddPublisher(PublisherForAddDto publisher)
     {
         var query = @$"INSERT INTO publishers
             (publisher_name) 
             VALUES 
             (@PublisherName)";
         using var connection = _context.CreateConnection();
-        await connection.ExecuteAsync(query, publisher);
+        connection.Execute(query, publisher);
     }
 
-    public async Task DeletePublisher(long id)
+    public void DeletePublisher(long id)
     {
         var query = @"DELETE FROM publishers
                     WHERE publisher_id = @id";
         using var connection = _context.CreateConnection();
-        await connection.ExecuteAsync(query, new { id });
+        connection.Execute(query, new { id });
     }
 
     public async Task<IEnumerable<PublisherDto>> GetAllPublishers()
@@ -67,14 +66,14 @@ public class PublisherRepository : IPublisherRepository
         return await GetPublisher(publisherName) is not null;
     }
 
-    public async Task UpdatePublisher(long id, PublisherForUpdateDto publisher)
+    public void UpdatePublisher(long id, PublisherForUpdateDto publisher)
     {
         var query = @"UPDATE publishers SET
                     publisher_name = @PublisherName
                     WHERE publisher_id = @PublisherId";
         using var connection = _context.CreateConnection();
-        var temp = publisher.ConvertPublisherForManipulationDtoToPublisher(id);
-        await connection.ExecuteAsync(query, temp);
+        var temp = publisher.ConvertPublisherForManipulationDtoToPublisherDto(id);
+        connection.Execute(query, temp);
     }
     
 }
