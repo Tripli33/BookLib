@@ -1,4 +1,4 @@
-namespace Shared.DataTransferObjects;
+namespace Shared.DataTransferObjects.CustomerBook;
 
 public class CustomerBookDto
 {
