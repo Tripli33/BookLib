@@ -1,18 +1,17 @@
 using System.ComponentModel.DataAnnotations;
-using Entities.Models;
 
-namespace Shared.DataTransferObjects;
+namespace Shared.DataTransferObjects.Author;
 
 public abstract class AuthorForManipulationDto
 {
     [Required(ErrorMessage = "Author name is a required field.")]
     [MaxLength(30, ErrorMessage ="Maximum length for the author name is 30 characters.")]
-    public string AuthorName { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
+    public string AuthorName { get; init; } = string.Empty;
+    public string Description { get; init; } = string.Empty;
 
-    public Author ConvertAuthorForManipulationDtoToAuthor(long id)
+    public AuthorDto ConvertAuthorForManipulationToAuthorDto(long id) 
     {
-        var author = new Author()
+        AuthorDto author = new()
         {
             AuthorId = id,
             AuthorName = this.AuthorName,
@@ -20,4 +19,5 @@ public abstract class AuthorForManipulationDto
         };
         return author;
     }
+    
 }
