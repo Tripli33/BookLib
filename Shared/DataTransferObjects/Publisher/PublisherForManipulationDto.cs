@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Entities.Models;
 
-namespace Shared.DataTransferObjects;
+namespace Shared.DataTransferObjects.Publisher;
 
 public abstract class PublisherForManipulationDto
 {
@@ -9,13 +8,14 @@ public abstract class PublisherForManipulationDto
     [MaxLength(30, ErrorMessage ="Maximum length for the publisher name is 30 characters.")]
     public string PublisherName { get; set; } = string.Empty;
 
-    public Publisher ConvertPublisherForManipulationDtoToPublisher(long id)
+    public PublisherDto ConvertPublisherForManipulationDtoToPublisherDto(long id)
     {
-        var publisher = new Publisher()
+        PublisherDto publisher = new()
         {
             PublisherId = id,
             PublisherName = this.PublisherName
         };
         return publisher;
     }
+    
 }
