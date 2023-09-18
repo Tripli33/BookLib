@@ -3,6 +3,7 @@ using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Book;
 
 namespace BookLib.Presentation.Controllers;
 
@@ -24,7 +25,7 @@ public class BookController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddBook([FromBody] BookForAddDto book)
+    public async Task<IActionResult> AddBook([FromBody] ExtendBookForAddDto book)
     {
         await _manager.BookService.AddBook(book);
         return Ok();
@@ -38,35 +39,35 @@ public class BookController : ControllerBase
         return Ok(books);
     }
 
-    [Route("genres/{genre}")]
+    [Route("genres/{genreName}")]
     [HttpGet]
-    public async Task<IActionResult> GetAllBooksByGenre(Genre genre)
+    public async Task<IActionResult> GetAllBooksByGenre(string genreName)
     {
-        var books = await _manager.BookService.GetAllBooksByGenre(genre);
+        var books = await _manager.BookService.GetAllBooksByGenre(genreName);
         return Ok(books);
     }
 
-    [Route("languages/{language}")]
+    [Route("languages/{languageName}")]
     [HttpGet]
-    public async Task<IActionResult> GetAllBooksByLanguage(Language language)
+    public async Task<IActionResult> GetAllBooksByLanguage(string languageName)
     {
-        var books = await _manager.BookService.GetAllBooksByLanguage(language);
+        var books = await _manager.BookService.GetAllBooksByLanguage(languageName);
         return Ok(books);
     }
 
-    [Route("authors/{authorId}")]
+    [Route("authors/{authorName}")]
     [HttpGet]
-    public async Task<IActionResult> GetAllBooksByAuthor(long authorId)
+    public async Task<IActionResult> GetAllBooksByAuthor(string authorName)
     {
-        var books = await _manager.BookService.GetAllBooksByAuthor(authorId);
+        var books = await _manager.BookService.GetAllBooksByAuthor(authorName);
         return Ok(books);
     }
 
-    [Route("publishers/{publisherId}")]
+    [Route("publishers/{publisherName}")]
     [HttpGet]
-    public async Task<IActionResult> GetAllBooksByPublisher(long publisherId)
+    public async Task<IActionResult> GetAllBooksByPublisher(string publisherName)
     {
-        var books = await _manager.BookService.GetAllBooksByPublisher(publisherId);
+        var books = await _manager.BookService.GetAllBooksByPublisher(publisherName);
         return Ok(books);
     }
 
@@ -88,7 +89,7 @@ public class BookController : ControllerBase
 
     [Route("{id}")]
     [HttpPut]
-    public async Task<IActionResult> UpdateBook(long id, [FromBody] BookForUpdateDto book)
+    public async Task<IActionResult> UpdateBook(long id, [FromBody] ExtendBookForUpdateDto book)
     {
         await _manager.BookService.UpdateBook(id, book);
         return Ok();
