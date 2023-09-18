@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Customer;
 
 namespace BookLib.Presentation.Controllers;
 
@@ -22,9 +22,9 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddCustomer([FromBody] CustomerForAddDto customer)
+    public IActionResult AddCustomer([FromBody] CustomerForAddDto customer)
     {
-        await _manager.CustomerService.AddCustomer(customer);
+        _manager.CustomerService.AddCustomer(customer);
         return Ok();
     }
 
