@@ -1,6 +1,4 @@
-using Entities.Models;
-
-namespace Shared.DataTransferObjects;
+﻿namespace Shared.DataTransferObjects.Book;
 
 public class BookForUpdateDto : BookForManipulationDto
 {
