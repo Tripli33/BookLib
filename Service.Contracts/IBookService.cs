@@ -1,20 +1,19 @@
 using Entities.Enums;
-using Entities.Models;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Book;
 
 namespace Service.Contracts;
 
 public interface IBookService
 {
-    Task<IEnumerable<BookDto>> GetAllBooks();
-    Task<IEnumerable<BookDto>> GetAllBooksByName(string name);
-    Task<IEnumerable<BookDto>> GetAllBooksByGenre(Genre genre);
-    Task<IEnumerable<BookDto>> GetAllBooksByLanguage(Language language);
-    Task<IEnumerable<BookDto>> GetAllBooksByAuthor(long authorId);
-    Task<IEnumerable<BookDto>> GetAllBooksByPublisher(long publisherId);
-    Task<IEnumerable<BookDto>> GetAllBooksByPublishDate(DateTime publishDate);
-    Task<BookDto> GetBook(long id);
-    Task AddBook(BookForAddDto book);
+    Task<IEnumerable<ExtendBookDto>> GetAllBooks();
+    Task<IEnumerable<ExtendBookDto>> GetAllBooksByName(string name);
+    Task<IEnumerable<ExtendBookDto>> GetAllBooksByGenre(string genreName);
+    Task<IEnumerable<ExtendBookDto>> GetAllBooksByLanguage(string languageName);
+    Task<IEnumerable<ExtendBookDto>> GetAllBooksByAuthor(string authorName);
+    Task<IEnumerable<ExtendBookDto>> GetAllBooksByPublisher(string publisherName);
+    Task<IEnumerable<ExtendBookDto>> GetAllBooksByPublishDate(DateTime publishDate);
+    Task<ExtendBookDto> GetBook(long id);
+    Task AddBook(ExtendBookForAddDto book);
     Task DeleteBook(long id);
-    Task UpdateBook(long id, BookForUpdateDto book);
+    Task UpdateBook(long id, ExtendBookForUpdateDto book);
 }

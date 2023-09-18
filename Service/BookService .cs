@@ -1,9 +1,9 @@
 using Contracts;
 using Entities.Enums;
 using Entities.Exceptions;
-using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Book;
 
 namespace Service;
 
@@ -14,67 +14,103 @@ public class BookService : IBookService
     {
         _repositoryManager = repositoryManager;
     }
-    public async Task AddBook(BookForAddDto book)
+    public async Task AddBook(ExtendBookForAddDto book)
     {
-        await _repositoryManager.Book.AddBook(book);
+        AuthorDto author = new();
+        PublisherDto publisher = new();
+        if (book.AuthorName is not null)
+            author = await _repositoryManager.Author.GetAuthor(book.AuthorName)
+            ?? throw new AuthorNotFoundException(book.AuthorName);
+        if (book.PublisherName is not null)
+            publisher = await _repositoryManager.Publisher.GetPublisher(book.PublisherName)
+            ?? throw new PublisherNotFoundException(book.PublisherName);
+        if (!EnumExtensions.IsEnumNameValid<Genre>(book.Genre))
+            throw new GenreNotFoundException(book.Genre);
+        if (!EnumExtensions.IsEnumNameValid<Language>(book.Language))
+            throw new LanguageNotFoundException(book.Language);
+        _repositoryManager.Book.AddBook
+        (
+                book.ConvertExtendBookForManipulationDtoToBookForManipulationDto<BookForAddDto>(author, publisher)
+        );
     }
 
     public async Task DeleteBook(long id)
     {
         if (!await _repositoryManager.Book.BookExists(id))
         throw new BookNotFoundException(id);
-        await _repositoryManager.Book.DeleteBook(id);
+        _repositoryManager.Book.DeleteBook(id);
     }
 
-    public Task<IEnumerable<BookDto>> GetAllBooks()
+    public Task<IEnumerable<ExtendBookDto>> GetAllBooks()
     {
         return _repositoryManager.Book.GetAllBooks();
     }
 
-    public async Task<IEnumerable<BookDto>> GetAllBooksByAuthor(long authorId)
+    public async Task<IEnumerable<ExtendBookDto>> GetAllBooksByAuthor(string authorName)
     {
-        if (!await _repositoryManager.Author.AuthorExists(authorId))
-        throw new AuthorNotFoundException(authorId);
-        return await _repositoryManager.Book.GetAllBooksByAuthor(authorId);
+        var author = await _repositoryManager.Author.GetAuthor(authorName)
+        ?? throw new AuthorNotFoundException(authorName);
+        return await _repositoryManager.Book.GetAllBooksByAuthor(author);
     }
 
-    public async Task<IEnumerable<BookDto>> GetAllBooksByGenre(Genre genre)
+    public async Task<IEnumerable<ExtendBookDto>> GetAllBooksByGenre(string genreName)
     {
+        if (!EnumExtensions.IsEnumNameValid<Genre>(genreName))
+            throw new GenreNotFoundException(genreName);
+        Genre genre = EnumExtensions.EnumNameToEnum<Genre>(genreName, Genre.WithoutGenre);
         return await _repositoryManager.Book.GetAllBooksByGenre(genre);
     }
 
-    public Task<IEnumerable<BookDto>> GetAllBooksByLanguage(Language language)
+    public Task<IEnumerable<ExtendBookDto>> GetAllBooksByLanguage(string languageName)
     {
+        if (!EnumExtensions.IsEnumNameValid<Language>(languageName))
+            throw new LanguageNotFoundException(languageName);
+        Language language = EnumExtensions.EnumNameToEnum<Language>(languageName, Language.WithoutLanguage);
         return _repositoryManager.Book.GetAllBooksByLanguage(language);
     }
 
-    public async Task<IEnumerable<BookDto>> GetAllBooksByName(string name)
+    public async Task<IEnumerable<ExtendBookDto>> GetAllBooksByName(string name)
     {
         return await _repositoryManager.Book.GetAllBooksByName(name);
     }
 
-    public async Task<IEnumerable<BookDto>> GetAllBooksByPublishDate(DateTime publishDate)
+    public async Task<IEnumerable<ExtendBookDto>> GetAllBooksByPublishDate(DateTime publishDate)
     {
         return await _repositoryManager.Book.GetAllBooksByPublishDate(publishDate);
     }
 
-    public async Task<IEnumerable<BookDto>> GetAllBooksByPublisher(long publisherId)
+    public async Task<IEnumerable<ExtendBookDto>> GetAllBooksByPublisher(string publisherName)
     {
-        if (!await _repositoryManager.Publisher.PublisherExists(publisherId))
-        throw new PublisherNotFoundException(publisherId);
-        return await _repositoryManager.Book.GetAllBooksByPublisher(publisherId);
+        var publisher = await _repositoryManager.Publisher.GetPublisher(publisherName)
+        ?? throw new PublisherNotFoundException(publisherName);
+        return await _repositoryManager.Book.GetAllBooksByPublisher(publisher);
     }
 
-    public async Task<BookDto> GetBook(long id)
+    public async Task<ExtendBookDto> GetBook(long id)
     {
         var book = await _repositoryManager.Book.GetBook(id);
         return book ?? throw new BookNotFoundException(id);
     }
 
-    public async Task UpdateBook(long id, BookForUpdateDto book)
+    public async Task UpdateBook(long id, ExtendBookForUpdateDto book)
     {
         if (!await _repositoryManager.Book.BookExists(id))
         throw new BookNotFoundException(id);
-        await _repositoryManager.Book.UpdateBook(id, book);
+        AuthorDto author = new();
+        PublisherDto publisher = new();
+        if (book.AuthorName is not null)
+            author = await _repositoryManager.Author.GetAuthor(book.AuthorName)
+            ?? throw new AuthorNotFoundException(book.AuthorName);
+        if (book.PublisherName is not null)
+            publisher = await _repositoryManager.Publisher.GetPublisher(book.PublisherName)
+            ?? throw new PublisherNotFoundException(book.PublisherName);
+        if (!EnumExtensions.IsEnumNameValid<Genre>(book.Genre))
+            throw new GenreNotFoundException(book.Genre);
+        if (!EnumExtensions.IsEnumNameValid<Language>(book.Language))
+            throw new LanguageNotFoundException(book.Language);
+        _repositoryManager.Book.UpdateBook(
+            id, 
+            book.ConvertExtendBookForManipulationDtoToBookForManipulationDto<BookForUpdateDto>(author, publisher)
+        );
     }
 }
