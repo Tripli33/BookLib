@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.CustomerBook;
 
 namespace BookLib.Presentation.Controllers;
 
