@@ -1,6 +1,6 @@
 using Contracts;
 using Dapper;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.Customer;
 
 namespace Repository;
 
@@ -13,16 +13,16 @@ public class CustomerRepository : ICustomerRepository
         _context = context;
     }
 
-    public async Task AddCustomer(CustomerForAddDto customer)
+    public void AddCustomer(CustomerForAddDto customer)
     {
         var query = @$"INSERT INTO customers
                     (first_name, last_name, email, contact_number, 
-                    address, created_date) 
+                    address, modified_date, created_date) 
                     VALUES 
                     (@FirstName, @LastName, @Email, @ContactNumber, 
-                    @Address, @CreatedDate)";
+                    @Address, @ModifiedDate, @CreatedDate)";
         using var connection = _context.CreateConnection();
-        await connection.ExecuteAsync(query, customer);
+        connection.ExecuteAsync(query, customer);
     }
 
     public async Task<bool> CustomerExists(long id)
@@ -30,12 +30,12 @@ public class CustomerRepository : ICustomerRepository
         return await GetCustomer(id) is not null;
     }
 
-    public async Task DeleteCustomer(long id)
+    public void DeleteCustomer(long id)
     {
         var query = @"DELETE FROM customers
                     WHERE customer_id = @id";
         using var connection = _context.CreateConnection();
-        await connection.ExecuteAsync(query, new { id });
+        connection.ExecuteAsync(query, new { id });
     }
 
     public async Task<IEnumerable<CustomerDto>> GetAllCustomers()
@@ -55,7 +55,7 @@ public class CustomerRepository : ICustomerRepository
         return customers;
     }
 
-    public async Task UpdateCustomer(long id, CustomerForUpdateDto customer)
+    public void UpdateCustomer(long id, CustomerForUpdateDto customer)
     {
         var query = @$"UPDATE customers SET
                     first_name = @FirstName, last_name = @LastName,
@@ -63,7 +63,7 @@ public class CustomerRepository : ICustomerRepository
                     address = @Address, modified_date = @ModifiedDate
                     WHERE customer_id = @CustomerId";
         using var connection = _context.CreateConnection();
-        var temp = customer.ConvertCustomerForUpdateDtoToCustomer(id);
-        await connection.ExecuteAsync(query, temp);
+        var temp = customer.ConvertCustomerForManipulationDtoToCustomerDto(id);
+        connection.ExecuteAsync(query, temp);
     }
 }
