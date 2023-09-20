@@ -1,4 +1,5 @@
 using Contracts;
+using MediatR;
 using Repository;
 using Service;
 using Service.Contracts;
@@ -18,6 +19,11 @@ public static class ServiceExtensions
     public static void ConfigureControllers(this IServiceCollection services)
     {
         services.AddControllers().AddApplicationPart(typeof(BookLib.Presentation.AssemblyReference).Assembly);
-    }   
+    }
+
+    public static void ConfigureMediatR(this IServiceCollection services)
+    {
+        services.AddMediatR(typeof(Application.AssemblyReference).Assembly);
+    }
     
 }

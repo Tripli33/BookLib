@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 DefaultTypeMap.MatchNamesWithUnderscores = true;
 builder.Services.AddSingleton<RepositoryContext>();
 
+builder.Services.ConfigureMediatR();
+
 builder.Services.ConfigureRepositoryManger();
 builder.Services.ConfigureServiceManger();
 
