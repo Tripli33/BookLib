@@ -1,5 +1,7 @@
+using Application.Author.Commands;
+using Application.Author.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Service.Contracts;
 using Shared.DataTransferObjects.Author;
 
 namespace BookLib.Presentation.Controllers;
@@ -8,23 +10,26 @@ namespace BookLib.Presentation.Controllers;
 [ApiController]
 public class AuthorController : ControllerBase
 {
-    private readonly IServiceManager _manager;
-    public AuthorController(IServiceManager manager)
+    private readonly IMediator _mediator;
+    
+    public AuthorController(IMediator mediator)
     {
-        _manager = manager;
+        _mediator = mediator;
     }
     
     [HttpGet]
     public async Task<IActionResult> GetAllAuthors()
     {
-        var authors = await _manager.AuthorService.GetAllAuthors();
+        var authors = await _mediator.Send(new GetAllAuthorsQuery());
         return Ok(authors.OrderBy(author => author.AuthorId));
     }
 
     [HttpPost]
     public IActionResult AddAuthor([FromBody] AuthorForAddDto author)
     {
-        _manager.AuthorService.AddAuthor(author);
+        if (!ModelState.IsValid)
+            return BadRequest();
+        _mediator.Send(new AddAuthorCommand(author));
         return Ok();
     }
 
@@ -32,7 +37,7 @@ public class AuthorController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAuthor(long id)
     {
-        var author = await _manager.AuthorService.GetAuthor(id);
+        var author = await _mediator.Send(new GetAuthorByIdQuery(id));
         return Ok(author);
     }
 
@@ -40,7 +45,7 @@ public class AuthorController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAuthor(string authorName)
     {
-        var author = await _manager.AuthorService.GetAuthor(authorName);
+        var author = await _mediator.Send(new GetAuthorByNameQuery(authorName));
         return Ok(author);
     }
 
@@ -48,7 +53,7 @@ public class AuthorController : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> DeleteAuthor(long id)
     {
-        await _manager.AuthorService.DeleteAuthor(id);
+        await _mediator.Send(new DeleteAuthorCommand(id));
         return Ok();
     }
 
@@ -56,7 +61,9 @@ public class AuthorController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdateAuthor(long id, [FromBody] AuthorForUpdateDto author)
     {
-        await _manager.AuthorService.UpdateAuthor(id, author);
+        if (!ModelState.IsValid)
+            return BadRequest();
+        await _mediator.Send(new UpdateAuthorCommand(id, author));
         return Ok();
     }
     
