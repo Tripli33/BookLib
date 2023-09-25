@@ -1,5 +1,7 @@
+using Application.Publisher.Commands;
+using Application.Publisher.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Service.Contracts;
 using Shared.DataTransferObjects.Publisher;
 
 namespace BookLib.Presentation.Controllers;
@@ -8,23 +10,25 @@ namespace BookLib.Presentation.Controllers;
 [ApiController]
 public class PublisherController : ControllerBase
 {
-    private readonly IServiceManager _manager;
-    public PublisherController(IServiceManager manager)
+    private readonly IMediator _mediator;
+    public PublisherController(IMediator mediator)
     {
-        _manager = manager;
+        _mediator = mediator;
     }
     
     [HttpGet]
     public async Task<IActionResult> GetAllPublishers()
     {
-        var publishers = await _manager.PublisherService.GetAllPublishers();
+        var publishers = await _mediator.Send(new GetAllPublishersQuery());
         return Ok(publishers.OrderBy(publisher => publisher.PublisherId));
     }
 
     [HttpPost]
     public IActionResult AddPublisher([FromBody] PublisherForAddDto publisher)
     {
-        _manager.PublisherService.AddPublisher(publisher);
+        if (!ModelState.IsValid)
+            return BadRequest();
+        _mediator.Send(new AddPublisherCommand(publisher));
         return Ok();
     }
 
@@ -32,7 +36,7 @@ public class PublisherController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPublisher(long id)
     {
-        var publisher = await _manager.PublisherService.GetPublisher(id);
+        var publisher = await _mediator.Send(new GetPublisherByIdQuery(id));
         return Ok(publisher);
     }
 
@@ -40,7 +44,7 @@ public class PublisherController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetPublisher(string publisherName)
     {
-        var publisher = await _manager.PublisherService.GetPublisher(publisherName);
+        var publisher = await _mediator.Send(new GetPublisherByNameQuery(publisherName));
         return Ok(publisher);
     }
 
@@ -48,7 +52,7 @@ public class PublisherController : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> DeletePublisher(long id)
     {
-        await _manager.PublisherService.DeletePublisher(id);
+        await _mediator.Send(new DeletePublisherCommand(id));
         return Ok();
     }
 
@@ -56,7 +60,7 @@ public class PublisherController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdatePublisher(long id, [FromBody] PublisherForUpdateDto publisher)
     {
-        await _manager.PublisherService.UpdatePublisher(id, publisher);
+        await _mediator.Send(new UpdatePublisherCommand(id, publisher));
         return Ok();
     }
 }
