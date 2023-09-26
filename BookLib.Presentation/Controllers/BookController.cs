@@ -1,5 +1,7 @@
+using Application.Book.Commands;
+using Application.Book.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Service.Contracts;
 using Shared.DataTransferObjects.Book;
 
 namespace BookLib.Presentation.Controllers;
@@ -8,23 +10,25 @@ namespace BookLib.Presentation.Controllers;
 [ApiController]
 public class BookController : ControllerBase
 {
-    private readonly IServiceManager _manager;
-    public BookController(IServiceManager manager)
+    private readonly IMediator _mediator;
+    public BookController(IMediator mediator)
     {
-        _manager = manager;
+        _mediator = mediator;
     }
     
     [HttpGet]
     public async Task<IActionResult> GetAllBooks()
     {
-        var books = await _manager.BookService.GetAllBooks();
+        var books = await _mediator.Send(new GetAllBooksQuery());
         return Ok(books.OrderBy(book => book.BookId));
     }
 
     [HttpPost]
     public async Task<IActionResult> AddBook([FromBody] ExtendBookForAddDto book)
     {
-        await _manager.BookService.AddBook(book);
+        if (!ModelState.IsValid)
+            return BadRequest();
+        await _mediator.Send(new AddBookCommand(book));
         return Ok();
     }
 
@@ -32,7 +36,7 @@ public class BookController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllBooksByName(string name)
     {
-        var books = await _manager.BookService.GetAllBooksByName(name);
+        var books = await _mediator.Send(new GetAllBooksByNameQuery(name));
         return Ok(books);
     }
 
@@ -40,7 +44,7 @@ public class BookController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllBooksByGenre(string genreName)
     {
-        var books = await _manager.BookService.GetAllBooksByGenre(genreName);
+        var books = await _mediator.Send(new GetAllBooksByGenreQuery(genreName));
         return Ok(books);
     }
 
@@ -48,7 +52,7 @@ public class BookController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllBooksByLanguage(string languageName)
     {
-        var books = await _manager.BookService.GetAllBooksByLanguage(languageName);
+        var books = await _mediator.Send(new GetAllBooksByLanguageQuery(languageName));
         return Ok(books);
     }
 
@@ -56,7 +60,7 @@ public class BookController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllBooksByAuthor(string authorName)
     {
-        var books = await _manager.BookService.GetAllBooksByAuthor(authorName);
+        var books = await _mediator.Send(new GetAllBooksByAuthorQuery(authorName));
         return Ok(books);
     }
 
@@ -64,7 +68,7 @@ public class BookController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllBooksByPublisher(string publisherName)
     {
-        var books = await _manager.BookService.GetAllBooksByPublisher(publisherName);
+        var books = await _mediator.Send(new GetAllBooksByPublishQuery(publisherName));
         return Ok(books);
     }
 
@@ -72,7 +76,7 @@ public class BookController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetBook(long id)
     {
-        var book = await _manager.BookService.GetBook(id);
+        var book = await _mediator.Send(new GetBookByIdQuery(id));
         return Ok(book);
     }
 
@@ -80,7 +84,7 @@ public class BookController : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> DeleteBook(long id)
     {
-        await _manager.BookService.DeleteBook(id);
+        await _mediator.Send(new DeleteBookCommand(id));
         return Ok();
     }
 
@@ -88,7 +92,7 @@ public class BookController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdateBook(long id, [FromBody] ExtendBookForUpdateDto book)
     {
-        await _manager.BookService.UpdateBook(id, book);
+        await _mediator.Send(new UpdateBookCommand(id, book));
         return Ok();
     }
 
