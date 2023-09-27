@@ -1,6 +1,8 @@
+using Application.Author.Commands;
+using Application.CustomerBook.Commands;
+using Application.CustomerBook.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Service.Contracts;
-using Shared.DataTransferObjects;
 using Shared.DataTransferObjects.CustomerBook;
 
 namespace BookLib.Presentation.Controllers;
@@ -9,17 +11,17 @@ namespace BookLib.Presentation.Controllers;
 [ApiController]
 public class CustomerBookController : ControllerBase
 {
-    private readonly IServiceManager _manager;
-    public CustomerBookController(IServiceManager manager)
+    private readonly IMediator _mediator;
+    public CustomerBookController(IMediator mediator)
     {
-        _manager = manager;
+        _mediator = mediator;
     }
 
     [Route("{customerId}/books")]
     [HttpGet]
     public async Task<IActionResult> GetAllCustomerBooks(long customerId)
     {
-        var books = await _manager.CustomerBookService.GetAllCustomerBooks(customerId);
+        var books = await _mediator.Send(new GetAllCustomerBooksQuery(customerId));
         return Ok(books);
     }
 
@@ -27,7 +29,9 @@ public class CustomerBookController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddCustomerBook(long customerId, CustomerBookDto book)
     {
-        await _manager.CustomerBookService.AddCustomerBook(customerId, book);
+        if (!ModelState.IsValid)
+            return BadRequest();
+        await _mediator.Send(new AddCustomerBookCommand(customerId, book));
         return Ok();
     }
 
@@ -35,7 +39,7 @@ public class CustomerBookController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetCustomerBook(long customerId, long bookId)
     {
-        var book = await _manager.CustomerBookService.GetCustomerBook(customerId, bookId);
+        var book = await _mediator.Send(new GetCustomerBookQuery(customerId, bookId));
         return Ok(book);
     }
 
@@ -43,7 +47,7 @@ public class CustomerBookController : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> DeleteCustomerBook(long customerId, long bookId)
     {
-        await _manager.CustomerBookService.DeleteCustomerBook(customerId, bookId);
+        await _mediator.Send(new DeleteCustomerBookCommand(customerId, bookId));
         return Ok();
     }    
 }
