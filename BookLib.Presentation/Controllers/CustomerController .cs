@@ -1,3 +1,6 @@
+using Application.Customer.Commands;
+using Application.Customer.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.Customer;
@@ -8,23 +11,25 @@ namespace BookLib.Presentation.Controllers;
 [ApiController]
 public class CustomerController : ControllerBase
 {
-    private readonly IServiceManager _manager;
-    public CustomerController(IServiceManager manager)
+    private readonly IMediator _mediator;
+    public CustomerController(IMediator mediator)
     {
-        _manager = manager;
+        _mediator = mediator;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAllCustomers()
     {
-        var customers = await _manager.CustomerService.GetAllCustomers();
+        var customers = await _mediator.Send(new GetAllCustomersQuery());
         return Ok(customers.OrderBy(customer => customer.CustomerId));
     }
 
     [HttpPost]
     public IActionResult AddCustomer([FromBody] CustomerForAddDto customer)
     {
-        _manager.CustomerService.AddCustomer(customer);
+        if (!ModelState.IsValid)
+            return BadRequest();
+        _mediator.Send(new AddCustomerCommand(customer));
         return Ok();
     }
 
@@ -32,7 +37,7 @@ public class CustomerController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetCustomer(long id)
     {
-        var customer = await _manager.CustomerService.GetCustomer(id);
+        var customer = await _mediator.Send(new GetCustomerQuery(id));
         return Ok(customer);
     }
 
@@ -40,7 +45,7 @@ public class CustomerController : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> DeleteCustomer(long id)
     {
-        await _manager.CustomerService.DeleteCustomer(id);
+        await _mediator.Send(new DeleteCustomerCommand(id));
         return Ok();
     }
 
@@ -48,7 +53,9 @@ public class CustomerController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdateCustomer(long id, [FromBody] CustomerForUpdateDto customer)
     {
-        await _manager.CustomerService.UpdateCustomer(id, customer);
+        if (!ModelState.IsValid)
+            return BadRequest();
+        await _mediator.Send(new UpdateCustomerCommand(id, customer));
         return Ok();
     }
 }
