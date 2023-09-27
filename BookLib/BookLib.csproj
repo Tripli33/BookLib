@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <ItemGroup>
     <ProjectReference Include="..\Repository\Repository.csproj" />
-    <ProjectReference Include="..\Service\Service.csproj" />
     <ProjectReference Include="..\BookLib.Presentation\BookLib.Presentation.csproj" />
     <ProjectReference Include="..\Application\Application.csproj" />
   </ItemGroup>

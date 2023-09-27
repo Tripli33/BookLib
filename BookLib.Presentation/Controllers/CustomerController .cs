@@ -2,7 +2,6 @@ using Application.Customer.Commands;
 using Application.Customer.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Service.Contracts;
 using Shared.DataTransferObjects.Customer;
 
 namespace BookLib.Presentation.Controllers;
